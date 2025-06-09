@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import userService from "../../Service/UserApi";
 import { Button } from "../../Components/button";
 import { useDispatch, useSelector } from "react-redux";
-import { list } from "../../features/user/userSlice";
 import { logout } from "../../features/auth/authSlice";
+import userThunk from "../../features/user/userThunk";
 
 
 function UserList(){
@@ -19,7 +18,7 @@ function UserList(){
     
     
     useEffect(()=>{
-        dispatch(list({page}));
+        dispatch(userThunk.list({page}));
     },[page,dispatch]);
 
     useEffect(() => {
@@ -41,7 +40,6 @@ function UserList(){
     }
     const handleLogOut =()=>{
         if(window.confirm("Do you want to LogOut?")){
-            // localStorage.removeItem('token');
             dispatch(logout());
             navigate('/');
         }

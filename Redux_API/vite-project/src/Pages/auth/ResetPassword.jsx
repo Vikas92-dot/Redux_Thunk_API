@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import authService from "../../Service/AuthApi";
 import { Button } from "../../Components/button";
-import { resetPassword } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import authThunk from "../../features/auth/authThunk";
 
 
 function ResetPassword(){
@@ -57,7 +55,7 @@ function ResetPassword(){
           password:password
         }
 
-    dispatch(resetPassword(body)).then((response)=>{
+    dispatch(authThunk.resetPassword(body)).then((response)=>{
            if(response.meta.requestStatus === "fulfilled"){
              
              setProcessing(false); 
@@ -98,12 +96,12 @@ function ResetPassword(){
                     </div>
                   </div>
                   {passError && <p className="text-danger">{passError}</p>}
-                  <button disabled={processing} onClick={handleSubmit} type="submit" className="btn btn-warning btn-lg w-100">{processing ? 
+                  <Button disabled={processing} onClick={handleSubmit} type="submit" className="btn btn-warning btn-lg w-100">{processing ? 
                         <div className="text-center">
                             <div class="spinner-border" role="status">
                              <span class="visually-hidden">Loading...</span>
                             </div>
-                          </div> : "Change Password"}</button>
+                          </div> : "Change Password"}</Button>
                 </form>
               </div>
             </div>

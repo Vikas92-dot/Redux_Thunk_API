@@ -1,10 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useState } from "react";
-import authService from "../../Service/AuthApi";
 import { Button } from "../../Components/button";
-import { emailVerification } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import authThunk from "../../features/auth/authThunk";
 
 
 
@@ -20,7 +18,7 @@ function VerifyEmail(){
     const handleSubmit = async (e)=>{ 
         e.preventDefault();
         setProcessing(true);
-         dispatch(emailVerification({emailVerificationTOken,id}))
+         dispatch(authThunk.emailVerification({emailVerificationTOken,id}))
                 .then((response)=>{
                     setProcessing(false);  
                 if(response.meta.requestStatus === "fulfilled"){
@@ -31,30 +29,6 @@ function VerifyEmail(){
                     setProcessing(false);
                 }
                 })
-        // try {
-        //     setProcessing(true);
-        //     console.log(email,emailVerificationTOken,id);
-        //     // const body ={
-        //     //     emailVerificationTOken:emailVerificationTOken,
-        //     //     id:id
-        //     // };
-            
-        //     const result = await authService.emailVerification({emailVerificationTOken,id});
-
-        //     if(result){
-        //         setProcessing(false);
-        //     }
-        //     console.log(result);
-        //     toast.success("Email Verified Successfully");
-
-        //     localStorage.removeItem('emailToken');
-        //     navigate('/');
-            
-            
-        // } catch (error) {
-        //     setProcessing(false);
-        //     console.log(error);
-        // }
     }
     return<>
         <div className="container  justify-content-center align-item-center d-flex">

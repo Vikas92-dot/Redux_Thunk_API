@@ -1,5 +1,6 @@
-import axiosInstance from "../Helper/AxiosInstance";
-import apiPath from "./apiPath";
+import axiosInstance from "../../Helper/AxiosInstance";
+import apiPath from "../../Service/apiPath";
+
 
 
 //User List

@@ -1,11 +1,9 @@
-import image from '../../assets/user-profile.png';
+import image from '../../assets/Profile_Card.png';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import userService from '../../Service/UserApi';
 import { Button } from '../../Components/button';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, show } from '../../features/user/userSlice';
+import userThunk from '../../features/user/userThunk';
 
 
 
@@ -18,7 +16,7 @@ function UserDetails(){
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        dispatch(show({id}));
+        dispatch(userThunk.show({id}));
     },[dispatch]);
 
     useEffect(()=>{
@@ -28,7 +26,7 @@ function UserDetails(){
     const handleDelete = async () =>{
         if(window.confirm("Do you want to delete it?")){
 
-        dispatch(deleteUser({id})).then((response)=>{
+        dispatch(userThunk.deleteUser({id})).then((response)=>{
         if(response.meta.requestStatus === "fulfilled"){        
             navigate(-1)
         }

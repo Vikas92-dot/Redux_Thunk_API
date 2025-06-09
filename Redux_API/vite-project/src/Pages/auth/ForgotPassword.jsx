@@ -1,10 +1,8 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
-import authService from "../../Service/AuthApi";
 import { Button } from "../../Components/button";
-import { forgotPassword } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import authThunk from "../../features/auth/authThunk";
 
 
 
@@ -20,7 +18,7 @@ function ForgotPassword(){
     setProcessing(true);
 
     const body ={email}
-     dispatch(forgotPassword(body)).then((response)=>{
+     dispatch(authThunk.forgotPassword(body)).then((response)=>{
        if(response.meta.requestStatus === "fulfilled"){
          
          setProcessing(false); 
