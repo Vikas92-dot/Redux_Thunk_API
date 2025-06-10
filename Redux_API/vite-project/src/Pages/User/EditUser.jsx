@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import * as Yup from 'yup';
 import { Button } from "../../Components/button";
 import { useDispatch, useSelector } from "react-redux";
-import userThunk from "../../features/user/userThunk";
+import { update } from "../../Redux/user/userSlice";
 
 
 
@@ -37,7 +37,7 @@ function EditUser(){
                 email: values.email,
                 password: values.password
             }
-            dispatch(userThunk.update({id,body}))
+            dispatch(update({id,body}))
                     .then((response)=>{
                     if(response.meta.requestStatus === "fulfilled"){  
                         setSubmitting(false);      

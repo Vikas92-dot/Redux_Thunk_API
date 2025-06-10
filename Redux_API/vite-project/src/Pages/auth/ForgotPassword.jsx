@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "../../Components/button";
 import { useDispatch } from "react-redux";
-import authThunk from "../../features/auth/authThunk";
+//import { forgotPassword } from "../../Redux/auth/actions";
+
 
 
 
@@ -18,7 +19,7 @@ function ForgotPassword(){
     setProcessing(true);
 
     const body ={email}
-     dispatch(authThunk.forgotPassword(body)).then((response)=>{
+     dispatch(forgotPassword(body)).then((response)=>{
        if(response.meta.requestStatus === "fulfilled"){
          
          setProcessing(false); 

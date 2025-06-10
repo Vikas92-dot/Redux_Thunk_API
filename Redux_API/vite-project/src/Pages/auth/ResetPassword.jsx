@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Button } from "../../Components/button";
 import { useDispatch } from "react-redux";
-import authThunk from "../../features/auth/authThunk";
+//import { resetPassword } from "../../Redux/auth/actions";
 
 
 function ResetPassword(){
@@ -55,7 +55,7 @@ function ResetPassword(){
           password:password
         }
 
-    dispatch(authThunk.resetPassword(body)).then((response)=>{
+    dispatch(resetPassword(body)).then((response)=>{
            if(response.meta.requestStatus === "fulfilled"){
              
              setProcessing(false); 

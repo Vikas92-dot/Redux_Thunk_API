@@ -1,12 +1,12 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import authReducer from '../features/auth/authSlice'
-import userReducer from '../features/user/userSlice'
+import authReducer from './auth/authReducers'
+import userReducer from './user/userSlice'
 import storage from 'redux-persist/lib/storage'
 import { persistStore, persistReducer } from 'redux-persist';
 
 const rootReducer = combineReducers({
     auth:authReducer,
-    user:userReducer
+    user:userReducer,
 })
 
 const persistConfig = {

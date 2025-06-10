@@ -4,7 +4,8 @@ import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import { Button } from "../../Components/button";
 import { useDispatch } from "react-redux";
-import authThunk from "../../features/auth/authThunk";
+import { register } from "../../Redux/auth/authActions";
+
 
 
 
@@ -30,7 +31,7 @@ function Register(){
                 email: values.email,
                 password: values.password
             }
-             dispatch(authThunk.register(body)).then((response)=>{
+             dispatch(register(body)).then((response)=>{
                  setSubmitting(false);  
                 if(response.meta.requestStatus === "fulfilled"){
                                 

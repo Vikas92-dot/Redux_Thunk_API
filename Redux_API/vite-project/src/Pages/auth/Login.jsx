@@ -4,7 +4,9 @@ import * as Yup from 'yup';
 import {useFormik} from 'formik';
 import { Button } from "../../Components/button";
 import { useDispatch } from "react-redux";
-import authThunk from "../../features/auth/authThunk";
+import { login } from "../../Redux/auth/authActions";
+
+
 
 const validationSchema = Yup.object({
     email: Yup.string().email("Invalid Email").required("Email is required."),
@@ -25,12 +27,12 @@ function Login(){
             const body = {
                 email: values.email,
                 password: values.password
-            }
-                
-            dispatch(authThunk.login(body)).then((response)=>{
-                 setSubmitting(false);  
-            if(response.meta.requestStatus === "fulfilled"){
-                            
+            }    
+            dispatch(login(body)).then((response)=>{
+                 setSubmitting(false);
+                 console.log(response);
+                   
+            if(response.meta.requestStatus === "fulfilled"){                        
                 navigate(`/dashboard`)
             }
             else {

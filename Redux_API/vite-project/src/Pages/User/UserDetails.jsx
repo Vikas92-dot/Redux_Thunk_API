@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../Components/button';
 import { useDispatch, useSelector } from 'react-redux';
-import userThunk from '../../features/user/userThunk';
+import { deleteUser, show } from '../../Redux/user/userSlice';
 
 
 
@@ -16,7 +16,7 @@ function UserDetails(){
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        dispatch(userThunk.show({id}));
+        dispatch(show({id}));
     },[dispatch]);
 
     useEffect(()=>{
@@ -26,7 +26,7 @@ function UserDetails(){
     const handleDelete = async () =>{
         if(window.confirm("Do you want to delete it?")){
 
-        dispatch(userThunk.deleteUser({id})).then((response)=>{
+        dispatch(deleteUser({id})).then((response)=>{
         if(response.meta.requestStatus === "fulfilled"){        
             navigate(-1)
         }
@@ -35,9 +35,10 @@ function UserDetails(){
     }
     return<>
         <Button onClick={()=>{ navigate(-1)}} className='btn btn-warning mt-4 ms-4'>Dashboard</Button>
-        <div className="card p-2 " style={{width:"450px",position:"absolute",top:"2rem",left:"30rem",background: "linear-gradient(to bottom, #FFF8E1,rgb(243, 255, 79))"}}>
+        <div className='container justify-content-center d-flex'>
+
+        <div className="card p-2" style={{width:"450px",background: "linear-gradient(to bottom, #FFF8E1,rgb(243, 255, 79))"}}>
             <h2 className='text-center mt-2' >User Details</h2>
-        
             <img className="card-img-top" src={image} alt="User Image" style={{width:"100%",height:"300px"}} />
             <div className='p-2'>
                 <span className='fw-bold' style={{fontSize:"30px"}}>Name:</span>
@@ -67,6 +68,7 @@ function UserDetails(){
                             </div>
                           </div> : "Delete"}</Button>
             </div>
+        </div>
         </div>
     </>
 }

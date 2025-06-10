@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../Components/button";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../features/auth/authSlice";
-import userThunk from "../../features/user/userThunk";
+import { list } from "../../Redux/user/userSlice";
+//import { logout } from "../../Redux/auth/authSlice";
 
 
 function UserList(){
@@ -12,13 +12,13 @@ function UserList(){
     const[page,setPage] = useState(1);
     const[totalPages,setTotalPages] = useState(0);
     const navigate = useNavigate();
-    const userName = useSelector((state)=> state.auth.name)
+    const userName = localStorage.getItem('name');
     const {userList,totalRecords,loading} = useSelector((state)=> state.user);
     const dispatch = useDispatch();
     
     
     useEffect(()=>{
-        dispatch(userThunk.list({page}));
+        dispatch(list({page}));
     },[page,dispatch]);
 
     useEffect(() => {
@@ -40,8 +40,11 @@ function UserList(){
     }
     const handleLogOut =()=>{
         if(window.confirm("Do you want to LogOut?")){
-            dispatch(logout());
+            //dispatch(logout());
             navigate('/');
+            localStorage.removeItem('token');
+            localStorage.removeItem('name');
+            localStorage.removeItem('userId');
         }
         
     }
