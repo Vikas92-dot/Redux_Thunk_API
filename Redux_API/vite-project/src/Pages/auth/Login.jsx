@@ -30,10 +30,13 @@ function Login(){
             }    
             dispatch(login(body)).then((response)=>{
                  setSubmitting(false);
-                 console.log(response);
+                 console.log("Login page",response);
                    
-            if(response.meta.requestStatus === "fulfilled"){                        
-                navigate(`/dashboard`)
+            // if(response.meta.requestStatus === "fulfilled"){                        
+            //     navigate(`/dashboard`)
+            // }
+            if(response.token){
+                navigate('/dashboard')
             }
             else {
             

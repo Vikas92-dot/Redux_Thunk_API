@@ -33,7 +33,13 @@ function Register(){
             }
              dispatch(register(body)).then((response)=>{
                  setSubmitting(false);  
-                if(response.meta.requestStatus === "fulfilled"){
+                // if(response.meta.requestStatus === "fulfilled"){
+                                
+                //     navigate(`/email-verification/${email}`)
+                // }
+                console.log("Register page",response);
+                
+                if(response.id){
                                 
                     navigate(`/email-verification/${email}`)
                 }

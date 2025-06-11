@@ -1,9 +1,9 @@
-import { emailVerification, forgotPassword, login, register, resetPassword } from "./authActions";
-import {LOGOUT} from './authActions'
+import { emailVerification, forgotPassword, LOGIN_USER_FAILURE, LOGIN_USER_PENDING, LOGIN_USER_SUCCESS, REGISTER_USER_FAILURE, REGISTER_USER_PENDING, REGISTER_USER_SUCCESS, resetPassword, VERIFY_EMAIL_FAILURE, VERIFY_EMAIL_PENDING, VERIFY_EMAIL_SUCCESS } from "./authActions";
+import { LOGOUT } from './authActions'
 
-const initialState={
-    userId:null,
-    emailToken:null,
+const initialState = {
+    userId: null,
+    emailToken: null,
     name: null,
     token: null,
     loading: false,
@@ -12,115 +12,115 @@ const initialState={
 }
 
 const authReducer = (
-    state ={initialState},action) =>{
-    switch (action.type){
+    state = { initialState }, action) => {
+    switch (action.type) {
         //Login
-        case `${login.pending}`:
-            return{
+        case LOGIN_USER_PENDING:
+            return {
                 ...state,
-                loading:true,
-                error:null                
+                loading: true,
+                error: null
             }
-        case `${login.fulfilled}`:
+        case LOGIN_USER_SUCCESS:
             console.log("Login fulfilled payload", action.payload);
-            return{
+            return {
                 ...state,
-                loading :false,
-                name : action.payload.name,
-                token : action.payload.token,
-                isLoggedIn : true,
+                loading: false,
+                name: action.payload.name,
+                token: action.payload.token,
+                isLoggedIn: true,
             }
-        case `${login.rejected}`:
-            return{
+        case LOGIN_USER_FAILURE:
+            return {
                 ...state,
-                loading:false,
+                loading: false,
                 error: action.payload || 'Login failed',
             }
         case LOGOUT:
-            return{
+            return {
                 ...initialState
             }
         //Register
-        case `${register.pending}`:
-            return{
-                 ...state, 
-                 loading: true, 
-                 error: null
+        case REGISTER_USER_PENDING:
+            return {
+                ...state,
+                loading: true,
+                error: null
             }
-        case `${register.fulfilled}`:
-            return{
+        case REGISTER_USER_SUCCESS:
+            return {
                 ...state,
                 loading: false,
                 emailToken: action.payload.emailVerificationTOken,
                 userId: action.payload.id
             }
-        case `${register.rejected}`:
-            return{
+        case REGISTER_USER_FAILURE:
+            return {
                 ...state,
                 loading: false,
                 error: action.payload || 'Registration failed',
             }
 
         //Email Verification
-        case `${emailVerification.pending}`:
-            return{
-                ...state, 
-                loading: true, 
+        case VERIFY_EMAIL_PENDING:
+            return {
+                ...state,
+                loading: true,
                 error: null
             }
-        case `${emailVerification.fulfilled}`:
-            return{
+        case VERIFY_EMAIL_SUCCESS:
+            return {
                 ...state,
                 loading: false,
                 emailToken: null,
                 userId: null
             }
-        case `${emailVerification.rejected}`:
-            return{
+        case VERIFY_EMAIL_FAILURE:
+            return {
                 ...state,
                 loading: false,
                 error: action.payload || 'Verification failed',
             }
-        
+
         //Forgot Password
-            case `${forgotPassword.pending}`:
-            return{
-                ...state, 
-                loading: true, 
+        case `${forgotPassword.pending}`:
+            return {
+                ...state,
+                loading: true,
                 error: null
             }
         case `${forgotPassword.fulfilled}`:
-            return{
+            return {
                 ...state,
                 loading: false,
             }
         case `${forgotPassword.rejected}`:
-            return{
+            return {
                 ...state,
                 loading: false,
                 error: action.payload || 'Link not sent',
             }
 
         //Reset Password
-            case `${resetPassword.pending}`:
-            return{
-                ...state, 
-                loading: true, 
+        case `${resetPassword.pending}`:
+            return {
+                ...state,
+                loading: true,
                 error: null
             }
         case `${resetPassword.fulfilled}`:
-            return{
+            return {
                 ...state,
                 loading: false,
             }
         case `${resetPassword.rejected}`:
-            return{
+            return {
                 ...state,
                 loading: false,
                 error: action.payload || 'Something went wrong',
             }
 
-        
+
         default:
             return state;
     }

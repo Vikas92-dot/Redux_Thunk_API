@@ -23,7 +23,7 @@ function VerifyEmail(){
          dispatch(emailVerification({emailVerificationTOken,id}))
                 .then((response)=>{
                     setProcessing(false);  
-                if(response.meta.requestStatus === "fulfilled"){
+                if(response){
                                 
                     navigate('/');
                 }
