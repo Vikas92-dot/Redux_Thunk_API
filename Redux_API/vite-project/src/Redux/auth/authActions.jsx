@@ -2,14 +2,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./AuthApi";
 import { toast } from "react-toastify";
 
-export const LOGIN_REQUEST = "LOGIN_REQUEST";
-export const REGISTER_REQUEST = "REGISTER_REQUEST";
-export const VERIFY_EMAIL_REQUEST = "VERIFY_EMAIL_REQUEST";
 
+export const LOGOUT = 'LOGOUT'; 
 
+export const logout = () => ({
+    type: LOGOUT
+});
 
 //Login
-export const login = createAsyncThunk(LOGIN_REQUEST,
+export const login = createAsyncThunk('auth/login',
     async(body,{rejectWithValue})=>{
       try {
           const response = await authService.login(body);
@@ -27,7 +28,7 @@ export const login = createAsyncThunk(LOGIN_REQUEST,
 )
 
 //Register
- export const register = createAsyncThunk(REGISTER_REQUEST,
+ export const register = createAsyncThunk("auth/register",
     async(body,{rejectWithValue})=>{
       try {
           const response = await authService.register(body);
@@ -45,7 +46,7 @@ export const login = createAsyncThunk(LOGIN_REQUEST,
 )
 
 //Email Verification
-export const emailVerification = createAsyncThunk(VERIFY_EMAIL_REQUEST,
+export const emailVerification = createAsyncThunk('auth/emailVerify',
     async({emailVerificationTOken,id},{rejectWithValue})=>{
       try {
           const response = await authService.emailVerification({emailVerificationTOken,id});
@@ -55,11 +56,42 @@ export const emailVerification = createAsyncThunk(VERIFY_EMAIL_REQUEST,
           return response.data.data;
       } catch (error) {
         console.log(error);
-        
+        toast.error(error.response.data.message || "Something went wrong");
         return rejectWithValue(error.response.data.message || "Something went wrong");
       
       }
     }
 )
 
+//Forgot Password
+ export const forgotPassword = createAsyncThunk('auth/forgotPassword',
+    async(body,{rejectWithValue})=>{
+      try {
+          const response = await authService.forgotPassword(body);
+          console.log("API response:",response.data.data); 
+          toast.success('Password Reset Link Sent to your Email id');     
+          return response.data.data;
+      } catch (error) {
+        console.log(error);
+        toast.error(state.error || 'Link not sent');
+        return rejectWithValue(error.response.data.message || "Something went wrong");
+      }
+    }
+)
 
+//Reset Password
+export const resetPassword = createAsyncThunk('auth/resetPassword',
+    async(body,{rejectWithValue})=>{
+      try {
+          const response = await authService.resetPassword(body);
+          console.log("API response:",response.data.data); 
+          toast.success('Password Reset Successfully');     
+          return response.data.data;
+      } catch (error) {
+        console.log(error);
+        toast.error(state.error || 'Something went wrong');
+        return rejectWithValue(error.response.data.message || "Something went wrong");
+      
+      }
+    }
+)

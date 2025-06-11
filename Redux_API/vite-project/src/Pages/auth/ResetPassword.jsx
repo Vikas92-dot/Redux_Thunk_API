@@ -3,7 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Button } from "../../Components/button";
 import { useDispatch } from "react-redux";
-//import { resetPassword } from "../../Redux/auth/actions";
+import { resetPassword } from "../../Redux/auth/authActions";
+
 
 
 function ResetPassword(){

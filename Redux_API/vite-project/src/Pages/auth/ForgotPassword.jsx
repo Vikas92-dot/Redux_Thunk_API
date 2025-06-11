@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from "../../Components/button";
 import { useDispatch } from "react-redux";
+import { forgotPassword } from "../../Redux/auth/authActions";
 //import { forgotPassword } from "../../Redux/auth/actions";
 
 

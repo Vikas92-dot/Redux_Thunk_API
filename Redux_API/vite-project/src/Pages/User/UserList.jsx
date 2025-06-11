@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../../Components/button";
 import { useDispatch, useSelector } from "react-redux";
 import { list } from "../../Redux/user/userSlice";
-//import { logout } from "../../Redux/auth/authSlice";
+import { logout } from "../../Redux/auth/authActions";
+
 
 
 function UserList(){
@@ -40,7 +41,7 @@ function UserList(){
     }
     const handleLogOut =()=>{
         if(window.confirm("Do you want to LogOut?")){
-            //dispatch(logout());
+            dispatch(logout());
             navigate('/');
             localStorage.removeItem('token');
             localStorage.removeItem('name');
