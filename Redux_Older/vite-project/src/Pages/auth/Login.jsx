@@ -22,28 +22,25 @@ function Login(){
         initialValues: data,
         validationSchema,
         enableReinitialize: true,
-        onSubmit: (values,{setSubmitting}) =>{
-                        
+        onSubmit: (values, { setSubmitting }) => {
+
             const body = {
                 email: values.email,
                 password: values.password
-            }    
-            dispatch(login(body)).then((response)=>{
-                 setSubmitting(false);
-                 console.log("Login page",response);
-                   
-            // if(response.meta.requestStatus === "fulfilled"){                        
-            //     navigate(`/dashboard`)
-            // }
-            if(response.token){
-                navigate('/dashboard')
             }
-            else {
-            
+            dispatch(login(body)).then((response) => {
                 setSubmitting(false);
-            }
+                console.log("Login page", response);
+
+                if (response && typeof response === "object" && response.token) {
+                    navigate("/dashboard");
+                }
+                else {
+
+                    setSubmitting(false);
+                }
             })
-    },
+        },
     })
     return<>
         <div className="container justify-content-center align-item-center d-flex" style={{}}>

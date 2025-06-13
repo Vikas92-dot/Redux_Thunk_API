@@ -13,6 +13,8 @@ export const VERIFY_EMAIL_SUCCESS = 'VERIFY_EMAIL_SUCCESS';
 export const VERIFY_EMAIL_FAILURE = 'VERIFY_EMAIL_FAILURE';
 
 
+
+
 export const LOGOUT = 'LOGOUT'; 
 
 export const logout = () => ({
@@ -41,7 +43,7 @@ export const login = (body) => {
         payload: error.message
       });
       console.log(error);
-      toast.error(error.response.data.message || "Login failed");
+      toast.error(error?.response?.data?.message || "Something went wrong");
       return (error.response.data.message || "Something went wrong");
     }
   };

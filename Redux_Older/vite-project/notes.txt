@@ -1,0 +1,174 @@
+src
+    component
+        input.js
+        button.js
+        model.js
+    Pages
+        auth (before login)
+            login.js
+            register.js
+            resetPassword.js
+            authStyle.css
+        user
+            userList.js
+            userForm.js (id) - edit
+            component
+                files....
+    Router
+        index.js
+        publicRoutes.js
+        privateRouter.js
+    service
+        apiPath.js
+        userService.js
+        authService.js
+    helper
+        axiosInterceptors.js
+        Common.js
+
+
+To add a functional search bar to your UserList component and place it at a suitable position, you can enhance your code like this:
+
+1. Add a search state using useState.
+2. Filter the users based on the search input.
+3. Position the search bar clearly above the table, outside the navbar to keep it visually clean.
+
+Here is your updated code with the search functionality added:
+
+🛠️ Update to UserList.jsx:
+
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../Components/button";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/auth/authSlice";
+import userThunk from "../../features/user/userThunk";
+
+function UserList() {
+const \[users, setUsers] = useState(\[]);
+const \[filteredUsers, setFilteredUsers] = useState(\[]);
+const \[searchTerm, setSearchTerm] = useState("");
+const \[page, setPage] = useState(1);
+const \[totalPages, setTotalPages] = useState(0);
+const navigate = useNavigate();
+const userName = useSelector((state) => state.auth.name);
+const { userList, totalRecords, loading } = useSelector((state) => state.user);
+const dispatch = useDispatch();
+
+useEffect(() => {
+dispatch(userThunk.list({ page }));
+}, \[page, dispatch]);
+
+useEffect(() => {
+setUsers(userList);
+setFilteredUsers(userList);
+const pages = Math.ceil(totalRecords / 10);
+setTotalPages(pages);
+}, \[userList, totalRecords]);
+
+useEffect(() => {
+const filtered = users.filter((user) =>
+user.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+setFilteredUsers(filtered);
+}, \[searchTerm, users]);
+
+const setNext = () => {
+if (page < totalPages) {
+setPage((prev) => prev + 1);
+}
+};
+
+const setPrevious = () => {
+if (page > 1) {
+setPage((prev) => prev - 1);
+}
+};
+
+const handleLogOut = () => {
+if (window\.confirm("Do you want to LogOut?")) {
+dispatch(logout());
+navigate("/");
+}
+};
+
+return (
+<> <div className="row">
+\<h2 className="text-center p-2 bg-info fw-bold text-bold" style={{ borderRadius: "5px", border: "1px solid black" }}>
+Users List </h2>
+\<h4 className="mt-2 text-white text-center fw-bold p-2 bg-secondary" style={{ position: "relative", left: "11%", border: "1px solid black", width: "15rem", borderRadius: "10px" }}>
+Hello, {userName} </h4>
+
+```
+    {/* Search Bar */}
+    <div className="d-flex justify-content-center mt-3">
+      <input
+        type="text"
+        className="form-control w-50"
+        placeholder="Search by name"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+    </div>
+
+    {/* Log Out Button */}
+    <Button onClick={handleLogOut} className="btn btn-danger fw-bold" style={{ width: "6rem", position: "absolute", top: "2%", left: "85%" }}>
+      Log Out
+    </Button>
+
+    {/* Table */}
+    {loading ? (
+      <div className="text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    ) : (
+      <table className="table table-danger table-bordered border-dark table-hover text-center" style={{ position: "absolute", top: "24%", left: "10%", width: "80%", height: "500px" }}>
+        <thead>
+          <tr>
+            <th>Sr no.</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredUsers.map((user, index) => (
+            <tr key={index}>
+              <td>{(page - 1) * 10 + (index + 1)}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>
+                <Button onClick={() => navigate(`/user-details/${user.id}`)} className="btn btn-primary">
+                  See Details
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+
+  {/* Pagination */}
+  <div style={{ position: "absolute", top: "46rem", left: "40%" }}>
+    <Button onClick={setPrevious} disabled={page === 1} className="btn btn-primary">
+      Previous
+    </Button>
+    <span className="fw-bold mx-2">Page {page} of {totalPages}</span>
+    <Button onClick={setNext} disabled={page === totalPages} className="btn btn-success">
+      Next
+    </Button>
+  </div>
+</>
+```
+
+);
+}
+
+export default UserList;
+
+Now your search bar appears clearly above the user table and filters user names as you type. Want to make the search case-insensitive or allow filtering by email too?
+
+You might also want to explore adding [search by email](f), [debounce in search](f), or [server-side filtering with pagination](f) for better performance.

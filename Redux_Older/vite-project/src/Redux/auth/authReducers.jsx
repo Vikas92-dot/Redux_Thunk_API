@@ -1,4 +1,4 @@
-import { emailVerification, forgotPassword, LOGIN_USER_FAILURE, LOGIN_USER_PENDING, LOGIN_USER_SUCCESS, REGISTER_USER_FAILURE, REGISTER_USER_PENDING, REGISTER_USER_SUCCESS, resetPassword, VERIFY_EMAIL_FAILURE, VERIFY_EMAIL_PENDING, VERIFY_EMAIL_SUCCESS } from "./authActions";
+import { forgotPassword, LOGIN_USER_FAILURE, LOGIN_USER_PENDING, LOGIN_USER_SUCCESS, REGISTER_USER_FAILURE, REGISTER_USER_PENDING, REGISTER_USER_SUCCESS, resetPassword, VERIFY_EMAIL_FAILURE, VERIFY_EMAIL_PENDING, VERIFY_EMAIL_SUCCESS } from "./authActions";
 import { LOGOUT } from './authActions'
 
 const initialState = {
@@ -12,8 +12,8 @@ const initialState = {
 }
 
 const authReducer = (
-    state = { initialState }, action) => {
-    switch (action.type) {
+    state = initialState , action) => {
+    switch (action.type) {  
         //Login
         case LOGIN_USER_PENDING:
             return {
