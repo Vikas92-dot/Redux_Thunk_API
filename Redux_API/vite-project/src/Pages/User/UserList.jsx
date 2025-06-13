@@ -7,20 +7,22 @@ import { logout } from "../../Redux/auth/authActions";
 
 
 
-function UserList(){
-    
+function UserList() {
+
     const [users, setUsers] = useState([]);
-    const[page,setPage] = useState(1);
-    const[totalPages,setTotalPages] = useState(0);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
     const navigate = useNavigate();
     const userName = localStorage.getItem('name');
-    const {userList,totalRecords,loading} = useSelector((state)=> state.user);
+    const { userList, totalRecords, loading } = useSelector((state) => state.user);
     const dispatch = useDispatch();
-    
-    
-    useEffect(()=>{
-        dispatch(list({page}));
-    },[page,dispatch]);
+    const [searchName, setSearchName] = useState('');
+    const [order, setOrder] = useState('ascending');
+
+
+    useEffect(() => {
+        dispatch(list({ page }));
+    }, [page, dispatch]);
 
     useEffect(() => {
         console.log("All Users", userList);
@@ -29,68 +31,107 @@ function UserList(){
         setTotalPages(totalPages);
     }, [userList, totalRecords]);
 
-    const setNext =()=>{
-        if(page < totalPages ){
-            setPage((prev)=> prev+1);
-        }
-    } 
-    const setPrevious =()=>{
-        if(page > 1){
-            setPage((prev)=> prev-1);
+    const setNext = () => {
+        if (page < totalPages) {
+            setPage((prev) => prev + 1);
         }
     }
-    const handleLogOut =()=>{
-        if(window.confirm("Do you want to LogOut?")){
+    const setPrevious = () => {
+        if (page > 1) {
+            setPage((prev) => prev - 1);
+        }
+    }
+    const handleLogOut = () => {
+        if (window.confirm("Do you want to LogOut?")) {
             dispatch(logout());
             navigate('/');
             localStorage.removeItem('token');
             localStorage.removeItem('name');
             localStorage.removeItem('userId');
         }
-        
     }
+    const filteredUsers = users.filter((user) =>
+        user.name.toLowerCase().includes(searchName.toLowerCase())
+    );
 
-    return<>
-         <div className="row">
-             <h2 className="text-center p-2 bg-info fw-bold text-bold" style={{borderRadius:"5px",border:"1px solid black"}}>Users List</h2>
-                 <h4 className='mt-2 text-white text-center fw-bold p-2 bg-secondary' style={{position:"relative",left:"11%", border:"1px solid black",width:"15rem",borderRadius:"10px"}}>Hello, {userName} </h4>
-             
-             <Button onClick={()=> handleLogOut()} className="btn btn-danger fw-bold" style={{width:"6rem",position:"absolute",top:"2%",left:"92%"}}>Log Out</Button>
+    const sortedUsers = [...filteredUsers].sort((a, b) =>
+        order === "ascending" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)
+    );
 
-             {loading 
-                ?   <div className="text-center">
-                            <div class="spinner-border" role="status">
-                             <span class="visually-hidden">Loading...</span>
-                            </div>
+    return <>
+        <div className="container py-2">
+            <div className="container py-2 d-flex justify-content-between align-items-center">
+                <h2 className="text-center text-white rounded bg-primary p-2 py-2">User List</h2>
+                <button onClick={() => handleLogOut()} className="btn btn-danger fw-bold">Logout</button>
+            </div>
+            <h5 className="bg-secondary text-center text-white py-2 p-2 rounded mb-3">Hello,{userName}</h5>
+
+            <div className="d-flex justify-content-between flex-wrap mb-3">
+                <input
+                    type="search"
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    style={{ maxWidth: "300px" }}
+                    className="form-control"
+                    placeholder="Search by name"
+                />
+
+                <select className="form-select" onChange={(e) => setOrder(e.target.value)} style={{ maxWidth: "200px" }}>
+                    <option value="">Sort by</option>
+                    <option value="ascending">Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+
+            {loading ? (
+                <div className="text-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
                     </div>
-                : (<table className="table table-danger table-bordered border-dark table-hover text-center" style={{position:"absolute",top:"20%",left:"10%",width:"80%",height:"500px"}}>
-                <thead>
-                    <tr>
-                        <th>Sr no.</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user,index)=>(
-                        <tr key={index}>
-                            <td>{(page-1)*10+(index+1)}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>
-                                <Button onClick={()=> navigate(`/user-details/${user.id}`)} className="btn btn-primary">See Details</Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-             </table>) }
-         </div>
-          <div style={{position:"absolute",top:"46rem",left:"40%"}}>
-                <Button onClick={()=> setPrevious()} disabled={page === 1} className="btn btn-primary">Previous</Button>
-                <span className="fw-bold">Page {page} of {totalPages}</span>
-                <Button onClick={()=> setNext()} disabled={page === totalPages} className="btn btn-success ms-2">Next</Button>
-             </div>
-        </>
+                </div>
+            ) : (
+                <div className="table-responsive mb-3">
+                    <table className="table table-bordered table-hover text-center align-middle">
+                        <thead className="table-dark">
+                            <tr>
+                                <th>Sr no.</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sortedUsers.length > 1 ? (sortedUsers.map((user, index) => (
+                                <tr key={user.id}>
+                                    <td>{(page - 1) * 10 + (index + 1)}</td>
+                                    <td style={{ whiteSpace: "normal" }}>{user.name}</td>
+                                    <td style={{ whiteSpace: "normal" }}>{user.email}</td>
+                                    <td>
+                                        <Button
+                                            onClick={() => navigate(`/user-details/${user.id}`)}
+                                            className="btn btn-primary"
+                                        >
+                                            See Details
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))) :
+                                (
+                                    <td className="text-center fw-bold" colSpan={4}>
+                                        No User Found
+                                    </td>
+                                )
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            )}
+            <div className="justify-content-center align-items-center d-flex gap-2">
+                <button disabled={page === 1} onClick={() => setPrevious()} className="btn btn-warning">Previous</button>
+                Page {page} of {totalPages}
+                <button disabled={page === totalPages} onClick={() => setNext()} className="btn btn-success">Next</button>
+            </div>
+        </div>
+    </>
 }
 export default UserList;

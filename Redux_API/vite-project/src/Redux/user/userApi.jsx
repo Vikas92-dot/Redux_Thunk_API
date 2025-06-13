@@ -5,7 +5,7 @@ import apiPath from "../../Service/apiPath";
 
 //User List
 const list =({page})=>{
-    const users = axiosInstance.get(`${apiPath.user.USER_LIST}?pageNumber=${page}&pageSize=10`);
+    const users = axiosInstance.get(`${apiPath.user.USER_LIST}?pageNumber=${page}&pageSize=20`);
     return users;
 }
 
